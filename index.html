@@ -7,7 +7,8 @@
     <style>
         :root {
             --card-width: 300px;
-            --card-height: 400px;
+            --card-height: 420px;
+            --primary-color: #4e73df;
         }
 
         body {
@@ -16,12 +17,14 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            background: #f8f9fa;
         }
 
         header {
             text-align: center;
             padding: 2rem 0;
-            background: #f8f9fa;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .container {
@@ -42,57 +45,152 @@
             width: var(--card-width);
             height: var(--card-height);
             border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             padding: 1.5rem;
             background: white;
             transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 等级颜色系统 */
+        .level-realtime {
+            color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 4px solid #28a745;
+        }
+        .level-high {
+            color: #0052cc;
+            background: rgba(0, 82, 204, 0.1);
+            border-left: 4px solid #0052cc;
+        }
+        .level-above-normal {
+            color: #17a2b8;
+            background: rgba(23, 162, 184, 0.1);
+            border-left: 4px solid #17a2b8;
+        }
+        .level-normal {
+            color: #6c757d;
+            background: rgba(108, 117, 125, 0.1);
+            border-left: 4px solid #6c757d;
+        }
+        .level-below-normal {
+            color: #ffc107;
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+        }
+        .level-low {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            border-left: 4px solid #dc3545;
+        }
+        .level-deprecated {
+            color: #adb5bd;
+            background: rgba(173, 181, 189, 0.1);
+            border-left: 4px solid #adb5bd;
+            text-decoration: line-through;
+        }
+
+        .project-name {
+            font-size: 1.3rem;
+            margin: 0 0 1rem;
+            line-height: 1.4;
+            min-height: 3.6em;
         }
 
         .project-level {
-            color: #6c757d;
+            padding: 0.5rem 1.2rem;
+            border-radius: 0 15px 15px 0;
+            margin: 0 -1.5rem 1rem -1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
             font-size: 0.9em;
         }
 
+        .project-level::before {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .level-deprecated::before {
+            border-radius: 2px;
+        }
+
         .progress-bar {
-            height: 8px;
+            height: 10px;
             background: #e9ecef;
-            border-radius: 4px;
+            border-radius: 5px;
             margin: 1rem 0;
         }
 
         .progress {
             height: 100%;
-            background: #4e73df;
-            border-radius: 4px;
+            background: var(--primary-color);
+            border-radius: 5px;
             transition: width 0.5s ease;
+        }
+
+        .special-progress {
+            background: #ffeeba;
+            color: #856404;
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+
+        .date-info {
+            color: #6c757d;
+            margin: 0.5rem 0;
+            font-size: 0.95em;
         }
 
         .more-button {
             display: block;
             width: 100%;
             padding: 0.8rem;
-            background: #4e73df;
+            background: var(--primary-color);
             color: white;
             text-align: center;
-            border-radius: 5px;
+            border-radius: 8px;
             text-decoration: none;
             margin-top: auto;
+            transition: background 0.3s;
+        }
+
+        .more-button:hover {
+            background: #3759b5;
         }
 
         footer {
-            background: #f8f9fa;
+            background: white;
             text-align: center;
             padding: 1.5rem;
-            margin-top: auto;
+            margin-top: 3rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        @media (min-width: 768px) {
+        @media (max-width: 768px) {
             .container {
-                padding: 2rem 4rem;
+                padding: 1rem;
+            }
+            .card {
+                width: 100%;
+                height: auto;
+                min-height: 380px;
+            }
+            .project-name {
+                font-size: 1.1rem;
+                min-height: auto;
             }
         }
     </style>
@@ -113,41 +211,91 @@
     </footer>
 
     <script>
-        // 项目数据（可在此处修改）
         const projects = [
             {
-                name: "Quill 2025",
-                level: "低于正常",
+                name: "实时数据同步系统",
+                level: "realtime",
                 progress: 100,
                 publicDate: "2024-12",
                 releaseDate: "2025-01"
             },
             {
-                name: "（未确定名称）初音未来双插（含背景）立牌和素面镭射钥匙扣",
-                level: "高于正常",
-                progress: 监修中,
+                name: "初音未来周边套装",
+                level: "above-normal",
+                progress: "监修中",
                 publicDate: "2025-04",
                 releaseDate: "2025-05"
             },
-            // 可在此处添加更多项目...
+            {
+                name: "基础存储服务v3",
+                level: "normal",
+                progress: 75,
+                publicDate: "2025-01",
+                releaseDate: "2025-02"
+            },
+            {
+                name: "旧版接口维护",
+                level: "below-normal",
+                progress: 35,
+                publicDate: "-",
+                releaseDate: "-"
+            },
+            {
+                name: "传统格式支持",
+                level: "low",
+                progress: 15,
+                publicDate: "-",
+                releaseDate: "-"
+            },
+            {
+                name: "V1存储协议",
+                level: "deprecated",
+                progress: 0,
+                publicDate: "-",
+                releaseDate: "-"
+            }
         ];
 
-        // 生成卡片
+        const levelMap = {
+            realtime: 'REALTIME',
+            high: 'HIGH',
+            'above-normal': 'ABOVE NORMAL',
+            normal: 'NORMAL',
+            'below-normal': 'BELOW NORMAL',
+            low: 'LOW',
+            deprecated: 'DEPRECATED'
+        };
+
         const container = document.getElementById('projects-container');
+        
         projects.forEach(project => {
             const card = document.createElement('div');
             card.className = 'card';
+
+            // 进度显示
+            let progressDisplay = '';
+            if(typeof project.progress === 'number') {
+                progressDisplay = `
+                    <div class="progress-bar">
+                        <div class="progress" style="width: ${project.progress}%"></div>
+                    </div>
+                    <p class="date-info">进度：${project.progress}%</p>
+                `;
+            } else {
+                progressDisplay = `<div class="special-progress">${project.progress}</div>`;
+            }
+
             card.innerHTML = `
-                <h3>${project.name}</h3>
-                <p class="project-level">${project.level}</p>
-                <div class="progress-bar">
-                    <div class="progress" style="width: ${project.progress}%"></div>
+                <h3 class="project-name">${project.name}</h3>
+                <div class="project-level level-${project.level}">
+                    ${levelMap[project.level]}
                 </div>
-                <p>进度：${project.progress}</p>
-                <p>预计公开：${project.publicDate}</p>
-                <p>预计发布：${project.releaseDate}</p>
+                ${progressDisplay}
+                <p class="date-info">预计公开：${project.publicDate}</p>
+                <p class="date-info">预计发布：${project.releaseDate}</p>
                 <a href="#" class="more-button">查看更多</a>
             `;
+
             container.appendChild(card);
         });
     </script>
