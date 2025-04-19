@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Layoserve泠域存储 - 企划项目公开</title>
+    <style>
+        :root {
+            --card-width: 300px;
+            --card-height: 400px;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Microsoft YaHei', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            text-align: center;
+            padding: 2rem 0;
+            background: #f8f9fa;
+        }
+
+        .container {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .card {
+            width: var(--card-width);
+            height: var(--card-height);
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            background: white;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-level {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin: 1rem 0;
+        }
+
+        .progress {
+            height: 100%;
+            background: #4e73df;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .more-button {
+            display: block;
+            width: 100%;
+            padding: 0.8rem;
+            background: #4e73df;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: auto;
+        }
+
+        footer {
+            background: #f8f9fa;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 2rem 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Layoserve泠域存储</h1>
+        <h2>项目进度公开</h2>
+    </header>
+
+    <div class="container">
+        <div class="cards-container" id="projects-container"></div>
+    </div>
+
+    <footer>
+        <p>© 2025 Layoserve泠域存储</p>
+        <p><a href="https://www.baidu.com" style="color: #6c757d; text-decoration: none;">萌ICP备xxxxxxx号</a></p>
+    </footer>
+
+    <script>
+        // 项目数据（可在此处修改）
+        const projects = [
+            {
+                name: "Quill 2025",
+                level: "低于正常",
+                progress: 100,
+                publicDate: "2024-12",
+                releaseDate: "2025-01"
+            },
+            {
+                name: "（未确定名称）初音未来双插（含背景）立牌和素面镭射钥匙扣",
+                level: "高于正常",
+                progress: 监修中,
+                publicDate: "2025-04",
+                releaseDate: "2025-05"
+            },
+            // 可在此处添加更多项目...
+        ];
+
+        // 生成卡片
+        const container = document.getElementById('projects-container');
+        projects.forEach(project => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.innerHTML = `
+                <h3>${project.name}</h3>
+                <p class="project-level">${project.level}</p>
+                <div class="progress-bar">
+                    <div class="progress" style="width: ${project.progress}%"></div>
+                </div>
+                <p>进度：${project.progress}</p>
+                <p>预计公开：${project.publicDate}</p>
+                <p>预计发布：${project.releaseDate}</p>
+                <a href="#" class="more-button">查看更多</a>
+            `;
+            container.appendChild(card);
+        });
+    </script>
+</body>
+</html>
