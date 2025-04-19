@@ -7,8 +7,14 @@
     <style>
         :root {
             --card-width: 300px;
-            --card-height: 420px;
-            --primary-color: #4e73df;
+            --primary: #4e73df;
+            --realtime: #28a745;
+            --high: #0052cc;
+            --above: #17a2b8;
+            --normal: #6c757d;
+            --below: #ffc107;
+            --low: #dc3545;
+            --deprecated: #adb5bd;
         }
 
         body {
@@ -20,178 +26,96 @@
             background: #f8f9fa;
         }
 
-        header {
+        header, footer {
             text-align: center;
-            padding: 2rem 0;
+            padding: 2rem;
             background: white;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .container {
             flex: 1;
             padding: 2rem;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .cards-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(var(--card-width), 1fr));
             gap: 2rem;
-            justify-content: center;
+            grid-template-columns: repeat(auto-fit, minmax(var(--card-width), 1fr));
         }
 
         .card {
-            width: var(--card-width);
-            height: var(--card-height);
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            padding: 1.5rem;
             background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.3s;
+            min-height: 380px;
             display: flex;
             flex-direction: column;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* 等级颜色系统 */
-        .level-realtime {
-            color: #28a745;
-            background: rgba(40, 167, 69, 0.1);
-            border-left: 4px solid #28a745;
-        }
-        .level-high {
-            color: #0052cc;
-            background: rgba(0, 82, 204, 0.1);
-            border-left: 4px solid #0052cc;
-        }
-        .level-above-normal {
-            color: #17a2b8;
-            background: rgba(23, 162, 184, 0.1);
-            border-left: 4px solid #17a2b8;
-        }
-        .level-normal {
-            color: #6c757d;
-            background: rgba(108, 117, 125, 0.1);
-            border-left: 4px solid #6c757d;
-        }
-        .level-below-normal {
-            color: #ffc107;
-            background: rgba(255, 193, 7, 0.1);
-            border-left: 4px solid #ffc107;
-        }
-        .level-low {
-            color: #dc3545;
-            background: rgba(220, 53, 69, 0.1);
-            border-left: 4px solid #dc3545;
-        }
-        .level-deprecated {
-            color: #adb5bd;
-            background: rgba(173, 181, 189, 0.1);
-            border-left: 4px solid #adb5bd;
-            text-decoration: line-through;
-        }
-
-        .project-name {
-            font-size: 1.3rem;
-            margin: 0 0 1rem;
-            line-height: 1.4;
-            min-height: 3.6em;
-        }
+        .card:hover { transform: translateY(-5px) }
 
         .project-level {
-            padding: 0.5rem 1.2rem;
-            border-radius: 0 15px 15px 0;
-            margin: 0 -1.5rem 1rem -1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
+            padding: 0.5rem 1rem;
+            margin: 0 -1.5rem 1rem;
+            border-left: 4px solid;
+            background: rgba(0,0,0,0.05);
             font-size: 0.9em;
         }
 
         .project-level::before {
-            content: '';
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
+            content: '项目等级：';
+            color: #666;
+            margin-right: 0.5em;
         }
-        .level-deprecated::before {
-            border-radius: 2px;
+
+        .level-realtime { color: var(--realtime); border-color: var(--realtime) }
+        .level-high { color: var(--high); border-color: var(--high) }
+        .level-above { color: var(--above); border-color: var(--above) }
+        .level-normal { color: var(--normal); border-color: var(--normal) }
+        .level-below { color: var(--below); border-color: var(--below) }
+        .level-low { color: var(--low); border-color: var(--low) }
+        .level-deprecated { 
+            color: var(--deprecated);
+            border-color: var(--deprecated);
+            text-decoration: line-through;
         }
 
         .progress-bar {
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 5px;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
             margin: 1rem 0;
         }
 
-        .progress {
-            height: 100%;
-            background: var(--primary-color);
-            border-radius: 5px;
-            transition: width 0.5s ease;
-        }
+        .progress { height: 100%; background: var(--primary); transition: width 0.5s }
 
         .special-progress {
-            background: #ffeeba;
-            color: #856404;
-            padding: 0.8rem;
-            border-radius: 8px;
-            text-align: center;
+            background: #ffe08a;
+            padding: 0.5rem;
+            border-radius: 4px;
             margin: 1rem 0;
-            font-weight: bold;
-        }
-
-        .date-info {
-            color: #6c757d;
-            margin: 0.5rem 0;
-            font-size: 0.95em;
+            text-align: center;
         }
 
         .more-button {
             display: block;
-            width: 100%;
             padding: 0.8rem;
-            background: var(--primary-color);
+            background: var(--primary);
             color: white;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 6px;
             text-decoration: none;
             margin-top: auto;
-            transition: background 0.3s;
-        }
-
-        .more-button:hover {
-            background: #3759b5;
-        }
-
-        footer {
-            background: white;
-            text-align: center;
-            padding: 1.5rem;
-            margin-top: 3rem;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
         }
 
         @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            .card {
-                width: 100%;
-                height: auto;
-                min-height: 380px;
-            }
-            .project-name {
-                font-size: 1.1rem;
-                min-height: auto;
-            }
+            .container { padding: 1rem }
+            .cards-container { grid-template-columns: 1fr }
         }
     </style>
 </head>
@@ -207,7 +131,7 @@
 
     <footer>
         <p>© 2025 Layoserve泠域存储</p>
-        <p><a href="https://www.baidu.com" style="color: #6c757d; text-decoration: none;">萌ICP备xxxxxxx号</a></p>
+        <p><a href="https://www.baidu.com" style="color:inherit;text-decoration:none">萌ICP备xxxxxxx号</a></p>
     </footer>
 
     <script>
@@ -216,86 +140,45 @@
                 name: "实时数据同步系统",
                 level: "realtime",
                 progress: 100,
-                publicDate: "2024-12",
-                releaseDate: "2025-01"
+                dates: ["2024-12", "2025-01"]
+            },
+            {
+                name: "量子加密存储模块",
+                level: "high",
+                progress: 88,
+                dates: ["2025-02", "2025-03"]
             },
             {
                 name: "初音未来周边套装",
-                level: "above-normal",
+                level: "above",
                 progress: "监修中",
-                publicDate: "2025-04",
-                releaseDate: "2025-05"
-            },
-            {
-                name: "基础存储服务v3",
-                level: "normal",
-                progress: 75,
-                publicDate: "2025-01",
-                releaseDate: "2025-02"
-            },
-            {
-                name: "旧版接口维护",
-                level: "below-normal",
-                progress: 35,
-                publicDate: "-",
-                releaseDate: "-"
-            },
-            {
-                name: "传统格式支持",
-                level: "low",
-                progress: 15,
-                publicDate: "-",
-                releaseDate: "-"
-            },
-            {
-                name: "V1存储协议",
-                level: "deprecated",
-                progress: 0,
-                publicDate: "-",
-                releaseDate: "-"
+                dates: ["2025-04", "2025-05"]
             }
         ];
 
-        const levelMap = {
-            realtime: 'REALTIME',
-            high: 'HIGH',
-            'above-normal': 'ABOVE NORMAL',
-            normal: 'NORMAL',
-            'below-normal': 'BELOW NORMAL',
-            low: 'LOW',
-            deprecated: 'DEPRECATED'
-        };
-
         const container = document.getElementById('projects-container');
         
-        projects.forEach(project => {
+        projects.forEach(p => {
             const card = document.createElement('div');
             card.className = 'card';
-
-            // 进度显示
-            let progressDisplay = '';
-            if(typeof project.progress === 'number') {
-                progressDisplay = `
-                    <div class="progress-bar">
-                        <div class="progress" style="width: ${project.progress}%"></div>
-                    </div>
-                    <p class="date-info">进度：${project.progress}%</p>
-                `;
-            } else {
-                progressDisplay = `<div class="special-progress">${project.progress}</div>`;
-            }
-
             card.innerHTML = `
-                <h3 class="project-name">${project.name}</h3>
-                <div class="project-level level-${project.level}">
-                    ${levelMap[project.level]}
+                <h3>${p.name}</h3>
+                <div class="project-level level-${p.level}">
+                    ${p.level === 'realtime' ? '实时' :
+                      p.level === 'high' ? '高' :
+                      p.level === 'above' ? '高于正常' :
+                      p.level === 'normal' ? '正常' :
+                      p.level === 'below' ? '低于正常' :
+                      p.level === 'low' ? '低' : '弃用'}
                 </div>
-                ${progressDisplay}
-                <p class="date-info">预计公开：${project.publicDate}</p>
-                <p class="date-info">预计发布：${project.releaseDate}</p>
+                ${typeof p.progress === 'number' ? 
+                    `<div class="progress-bar"><div class="progress" style="width:${p.progress}%"></div></div>
+                     <p>进度：${p.progress}%</p>` : 
+                    `<div class="special-progress">${p.progress}</div>`}
+                <p>预计公开：${p.dates[0]}</p>
+                <p>预计发布：${p.dates[1]}</p>
                 <a href="#" class="more-button">查看更多</a>
             `;
-
             container.appendChild(card);
         });
     </script>
